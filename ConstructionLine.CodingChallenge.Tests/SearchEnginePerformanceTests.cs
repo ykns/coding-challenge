@@ -24,17 +24,11 @@ namespace ConstructionLine.CodingChallenge.Tests
         }
 
 
-        [Test]
-        public void PerformanceTest()
+        [TestCaseSource("PerformanceCases")]
+        public void PerformanceTest(SearchOptions options)
         {
             var sw = new Stopwatch();
             sw.Start();
-
-            var options = new SearchOptions
-            {
-                Colors = new List<Color> { Color.Red }
-            };
-
             var results = _searchEngine.Search(options);
 
             sw.Stop();
@@ -44,5 +38,23 @@ namespace ConstructionLine.CodingChallenge.Tests
             AssertSizeCounts(_shirts, options, results.SizeCounts);
             AssertColorCounts(_shirts, options, results.ColorCounts);
         }
+
+        static SearchOptions[] PerformanceCases =
+        {
+            new SearchOptions
+            {
+                Colors = new List<Color> { Color.Red }
+            },
+            new SearchOptions
+            {
+                Colors = new List<Color> { Color.Red },
+                Sizes = new List<Size> { Size.Large, Size.Medium },
+            },
+            new SearchOptions
+            {
+                Colors = new List<Color> { Color.Red, Color.Black },
+                Sizes = new List<Size> { Size.Large, Size.Medium },
+            },
+        };
     }
 }
